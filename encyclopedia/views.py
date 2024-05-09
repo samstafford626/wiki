@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import util
 from django.contrib import messages
+import random
 
 
 def index(request):
@@ -70,3 +71,9 @@ def edit(request, entryName):
             "entry": util.get_entry(entryName),
             "title": entryName,
         })
+    
+
+def randompage(request):
+    entries = util.list_entries()
+    entry = random.choice(entries)
+    return HttpResponseRedirect(f"/display/{entry}")
