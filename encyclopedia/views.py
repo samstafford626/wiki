@@ -55,3 +55,18 @@ def create(request):
     else:
 
         return render(request, "encyclopedia/create.html")
+    
+
+def edit(request, entryName):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+
+        util.save_entry(title, content)
+
+        return HttpResponseRedirect(f"/display/{title}")
+    else:
+        return render(request, "encyclopedia/edit.html", {
+            "entry": util.get_entry(entryName),
+            "title": entryName,
+        })
