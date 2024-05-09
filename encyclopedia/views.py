@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from . import util
 from django.contrib import messages
 import random
+from markdown2 import Markdown
 
 
 def index(request):
@@ -11,8 +12,10 @@ def index(request):
     })
 
 def display(request, entryName):
+    entry = util.get_entry(entryName)
+    entry = Markdown().convert(entry)
     return render(request, "encyclopedia/display.html", {
-        "entry": util.get_entry(entryName),
+        "entry": entry,
         "title": entryName,
     })
 
