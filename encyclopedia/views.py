@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import util
+from django.contrib import messages
 
 
 def index(request):
@@ -38,3 +39,19 @@ def search(request):
             })
     else:
         return HttpResponseRedirect("/")
+    
+def create(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+
+        if not util.get_entry(title):
+            util.save_entry(title, content)
+        else:
+            messages.error(request, "Entry already exists")
+            return render(request, "encyclopedia/create.html")
+
+        return HttpResponseRedirect(f"/display/{title}")
+    else:
+
+        return render(request, "encyclopedia/create.html")
