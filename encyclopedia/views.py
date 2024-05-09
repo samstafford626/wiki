@@ -30,8 +30,10 @@ def search(request):
                 if q.lower() in entry.lower():
                     tmp.append(entry)
             entries = tmp
+            if not entries:
+                entries = ["No results found"]
             return render(request, "encyclopedia/search.html", {
-                "entries": tmp,
+                "entries": entries,
                 "query": q,
             })
     else:
